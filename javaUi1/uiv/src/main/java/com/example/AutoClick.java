@@ -7,6 +7,7 @@ import java.awt.event.InputEvent;
 public class AutoClick {
     static boolean b = true;
     public static void clickMouse(int k, int n) {
+        System.out.println("hello Autoclicker is active " + k + "times: "+ n);
         try {
             Robot robot = new Robot();  
             b = true;        

@@ -1,7 +1,33 @@
 package com.example;
-import javax.swing.*;
-import java.awt.*;
-import java.awt.event.*;
+import java.awt.BorderLayout;
+import java.awt.Color;
+import java.awt.Dimension;
+import java.awt.FlowLayout;
+import java.awt.Font;
+import java.awt.Graphics;
+import java.awt.Graphics2D;
+import java.awt.GridBagConstraints;
+import java.awt.GridBagLayout;
+import java.awt.Image;
+import java.awt.Insets;
+import java.awt.RenderingHints;
+import java.awt.event.MouseAdapter;
+import java.awt.event.MouseEvent;
+
+import java.net.URL;
+
+import javax.swing.BorderFactory;
+import javax.swing.ButtonGroup;
+import javax.swing.ImageIcon;
+import javax.swing.JButton;
+import javax.swing.JFrame;
+import javax.swing.JLabel;
+import javax.swing.JOptionPane;
+import javax.swing.JPanel;
+import javax.swing.JRadioButton;
+import javax.swing.JTextField;
+import javax.swing.SwingConstants;
+import javax.swing.SwingUtilities;
 
 class UiButton extends JButton {
     public UiButton(String text) {
@@ -51,13 +77,21 @@ class UiLabel extends JLabel {
     public UiLabel() {
         this.setText("Let's get Clicking..");
         try {
-            ImageIcon oimg = new ImageIcon("5566599.png");
-            Image simg = oimg.getImage().getScaledInstance(120, 120, Image.SCALE_SMOOTH);
-            ImageIcon img = new ImageIcon(simg);
-            this.setIcon(img);
+            // Load image from resources
+            URL imageUrl = getClass().getResource("resources/5566599.png");
+            if (imageUrl != null) {
+                ImageIcon oimg = new ImageIcon(imageUrl);
+                Image simg = oimg.getImage().getScaledInstance(120, 120, Image.SCALE_SMOOTH);
+                ImageIcon img = new ImageIcon(simg);
+                this.setIcon(img);
+            } else {
+                System.out.println("Image not found: Check if the file exists in src/main/resources");
+            }
         } catch (Exception e) {
-            System.out.println("Image not found: " + e.getMessage());
+            System.out.println("Error loading image: " + e.getMessage());
         }
+        
+        
 
         this.setIconTextGap(20);
         this.setHorizontalTextPosition(JLabel.CENTER);
@@ -171,12 +205,12 @@ class RecorderFrame extends JFrame {
         this.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         this.setSize(400, 500);
         this.setResizable(false);
-        this.getContentPane().setBackground(new Color(0x0F2A38));
+        this.getContentPane().setBackground(new Color(0x1d2e28));
         this.setLayout(new BorderLayout(10, 10));
 
         JPanel topPanel = new JPanel(new BorderLayout(10, 10));
-        topPanel.setBackground(new Color(0x0F2A38));
-
+        topPanel.setBackground(new Color(0x1d2e28));
+        
         try {
             ImageIcon oimg = new ImageIcon("5566599.png");
             Image simg = oimg.getImage().getScaledInstance(50, 50, Image.SCALE_SMOOTH);
@@ -193,7 +227,7 @@ class RecorderFrame extends JFrame {
         topPanel.add(recorderLabel, BorderLayout.CENTER);
 
         JPanel savePanel = new JPanel(new FlowLayout(FlowLayout.RIGHT));
-        savePanel.setBackground(new Color(0x0F2A38));
+        savePanel.setBackground(new Color(0x1d2e28));
         RoundedButton saveButton = new RoundedButton("Save");
         savePanel.add(saveButton);
         topPanel.add(savePanel, BorderLayout.EAST);
@@ -206,14 +240,14 @@ class RecorderFrame extends JFrame {
         this.add(topPanel, BorderLayout.NORTH);
 
         JPanel centerPanel = new JPanel(new GridBagLayout());
-        centerPanel.setBackground(new Color(0x0F2A38));
+        centerPanel.setBackground(new Color(0x1d2e28));
         GridBagConstraints gbc = new GridBagConstraints();
         gbc.insets = new Insets(15, 10, 15, 10);
 
         JPanel notePanel = new JPanel();
         notePanel.setPreferredSize(new Dimension(350, 50));
-        notePanel.setBackground(new Color(0x4CAF50));
-        JLabel noteLabel = new JLabel("Note: Ctrl + R to toggle recording");
+        notePanel.setBackground(new Color(0x0a5c36));
+        JLabel noteLabel = new JLabel("Note: Ctrl+r to start and stop recording.");
         noteLabel.setForeground(Color.WHITE);
         noteLabel.setFont(new Font("Arial", Font.PLAIN, 14));
         notePanel.add(noteLabel);
@@ -251,7 +285,7 @@ class RecorderFrame extends JFrame {
         centerPanel.add(numRepsButton, gbc);
 
         JPanel repetitionTextPanel = new JPanel();
-        repetitionTextPanel.setBackground(new Color(0x0F2A38));
+        repetitionTextPanel.setBackground(new Color(0x1d2e28));
         repetitionTextPanel.setLayout(new FlowLayout(FlowLayout.LEFT, 10, 10));
         repetitionTextPanel.add(repsField);
 
@@ -264,7 +298,7 @@ class RecorderFrame extends JFrame {
         this.add(centerPanel, BorderLayout.CENTER);
 
         JPanel bottomPanel = new JPanel(new FlowLayout(FlowLayout.CENTER, 20, 10));
-        bottomPanel.setBackground(new Color(0x0F2A38));
+        bottomPanel.setBackground(new Color(0x1d2e28));
 
         RoundedButton runButton = new RoundedButton("Run");
         runButton.addActionListener(e -> {
@@ -312,18 +346,19 @@ class RecorderFrame extends JFrame {
     }
 }
 class ClickerFrame extends JFrame {
+    public int m = 0, s = 0;
 
     public ClickerFrame() {
         this.setTitle("Clicker Settings");
         this.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         this.setSize(430, 480); // Same size as Uiframe
         this.setResizable(false);
-        this.getContentPane().setBackground(new Color(0x0F2A38));
+        this.getContentPane().setBackground(new Color(0x1d2e28));
         this.setLayout(new BorderLayout(10, 10));
 
         // Top Panel with Logo and Title
         JPanel topPanel = new JPanel(new BorderLayout(10, 10));
-        topPanel.setBackground(new Color(0x0F2A38));
+        topPanel.setBackground(new Color(0x1d2e28));
 
         try {
             ImageIcon oimg = new ImageIcon("5566599.png");
@@ -344,33 +379,44 @@ class ClickerFrame extends JFrame {
 
         // Center Panel
         JPanel centerPanel = new JPanel(new GridBagLayout());
-        centerPanel.setBackground(new Color(0x0F2A38));
+        centerPanel.setBackground(new Color(0x1d2e28));
         GridBagConstraints gbc = new GridBagConstraints();
         gbc.insets = new Insets(15, 10, 15, 10);
 
         // Time Input Panel
         JPanel timeInputPanel = new JPanel(new FlowLayout(FlowLayout.LEFT, 15, 10)); // Left alignment
-        timeInputPanel.setBackground(new Color(0x4CAF50));
-        timeInputPanel.setPreferredSize(new Dimension(350, 120)); // Height increased by 50
+        timeInputPanel.setBackground(new Color(0x0a5c36));
+        timeInputPanel.setPreferredSize(new Dimension(350, 60)); // Height increased by 50
 
-        String[] labels = {"Hour:", "Min:", "Sec:", "Millisec:"};
-        boolean isMillisec = false;
-        for (String label : labels) {
-            JLabel textLabel = new JLabel(label);
-            textLabel.setForeground(Color.WHITE);
-            textLabel.setFont(new Font("Arial", Font.BOLD, 14));
-
-            JTextField textField = new JTextField(5);
-            textField.setPreferredSize(new Dimension(50, 30));
-
-            JPanel fieldPanel = new JPanel(new FlowLayout(isMillisec ? FlowLayout.LEFT : FlowLayout.CENTER, 5, 5));
-            fieldPanel.setBackground(new Color(0x4CAF50));
-            fieldPanel.add(textLabel);
-            fieldPanel.add(textField);
-
-            timeInputPanel.add(fieldPanel);
-            if (label.equals("Millisec:")) isMillisec = true;
-        }
+        JLabel textLabel1 = new JLabel("Min:");
+        textLabel1.setForeground(Color.WHITE);
+        textLabel1.setFont(new Font("Arial", Font.BOLD, 14));
+        
+        JTextField textField1 = new JTextField(5);
+        textField1.setPreferredSize(new Dimension(50, 30));
+        
+        
+        JPanel fieldPanel1 = new JPanel(new FlowLayout(FlowLayout.LEFT, 5, 5));
+        fieldPanel1.setBackground(new Color(0x0a5c36));
+        fieldPanel1.add(textLabel1);
+        fieldPanel1.add(textField1);
+        
+        timeInputPanel.add(fieldPanel1);
+        
+        JLabel textLabel2 = new JLabel("Sec:");
+        textLabel2.setForeground(Color.WHITE);
+        textLabel2.setFont(new Font("Arial", Font.BOLD, 14));
+        
+        JTextField textField2 = new JTextField(5);
+        textField2.setPreferredSize(new Dimension(50, 30));
+        
+        JPanel fieldPanel2 = new JPanel(new FlowLayout(FlowLayout.LEFT, 5, 5));
+        fieldPanel2.setBackground(new Color(0x0a5c36));
+        fieldPanel2.add(textLabel2);
+        fieldPanel2.add(textField2);
+        
+        timeInputPanel.add(fieldPanel2);
+        
 
         gbc.gridx = 0;
         gbc.gridy = 0;
@@ -402,7 +448,7 @@ class ClickerFrame extends JFrame {
         centerPanel.add(numRepsButton, gbc);
 
         JPanel repetitionTextPanel = new JPanel(new FlowLayout(FlowLayout.LEFT));
-        repetitionTextPanel.setBackground(new Color(0x0F2A38));
+        repetitionTextPanel.setBackground(new Color(0x1d2e28));
         repetitionTextPanel.add(repsField);
 
         gbc.gridx = 1;
@@ -413,13 +459,21 @@ class ClickerFrame extends JFrame {
 
         // Bottom Panel
         JPanel bottomPanel = new JPanel(new FlowLayout(FlowLayout.CENTER, 20, 10));
-        bottomPanel.setBackground(new Color(0x0F2A38));
+        bottomPanel.setBackground(new Color(0x1d2e28));
 
         RoundedButton runButton = new RoundedButton("Run");
         runButton.addActionListener(e -> {
             if (untilStoppedButton.isSelected()) {
                 JOptionPane.showMessageDialog(this, "Running until stopped...");
-                AutoClick.clickMouse(5, -1);
+                try {
+                    m = Integer.parseInt(textField1.getText().trim());
+                    s = Integer.parseInt(textField2.getText().trim());
+                    s += m*60;
+                } catch (NumberFormatException e1) {
+                    JOptionPane.showMessageDialog(null, "Please enter valid integers for time values!", "Input Error", JOptionPane.ERROR_MESSAGE);
+                    return;
+                }
+                AutoClick.clickMouse(s, -1);
             } else if (numRepsButton.isSelected()) {
                 String input = repsField.getText().trim();
                 if (input.isEmpty() || !input.matches("\\d+")) {
@@ -427,7 +481,15 @@ class ClickerFrame extends JFrame {
                 } else {
                     int repetitions = Integer.parseInt(input);
                     JOptionPane.showMessageDialog(this, "Running for " + repetitions + " repetitions...");
-                    AutoClick.clickMouse(1, repetitions);
+                    try {
+                        m = Integer.parseInt(textField1.getText().trim());
+                        s = Integer.parseInt(textField2.getText().trim());
+                        s += m*60;
+                    } catch (NumberFormatException e1) {
+                        JOptionPane.showMessageDialog(null, "Please enter valid integers for time values!", "Input Error", JOptionPane.ERROR_MESSAGE);
+                        return;
+                    }
+                    AutoClick.clickMouse(s, repetitions);
                 }
             } else {
                 JOptionPane.showMessageDialog(this, "Please select an option!", "Error", JOptionPane.ERROR_MESSAGE);
@@ -436,7 +498,7 @@ class ClickerFrame extends JFrame {
         bottomPanel.add(runButton);
 
         RoundedButton backButton = new RoundedButton("Back");
-        backButton.setBackground(new Color(0x5A5A5A));
+        backButton.setBackground(new Color(0x386775));
         backButton.addActionListener(e -> {
             new Uiframe();
             this.dispose();
